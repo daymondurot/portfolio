@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Durot Daymon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ----- RESET & BASE (Optimisé sans animations) ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #cbd5e1;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Variables */
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #7c3aed;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border-light: rgba(37, 99, 235, 0.3);
+        }
+
+        /* ----- SIDEBAR (sans backdrop-filter) ----- */
+        .sidebar {
+            width: 300px;
+            height: 100vh;
+            background: #1e293b;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid var(--primary);
+            z-index: 100;
+            overflow-y: auto;
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile {
+            padding: 50px 30px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        .profile h2 {
+            font-size: 22px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-weight: 800;
+            text-align: center;
+            width: 100%;
+        }
+
+        .profile p {
+            font-size: 11px;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .menu {
+            flex: 1;
+            padding: 30px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 12px 18px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: background 0.1s, color 0.1s, transform 0.1s;
+            border-left: 3px solid transparent;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: rgba(37, 99, 235, 0.15);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            transform: translateX(4px);
+        }
+
+        /* ----- MAIN CONTENT ----- */
+        .main-content {
+            margin-left: 300px;
+            flex: 1;
+            padding: 70px 90px;
+            background: #0f172a;
+        }
+
+        section {
+            margin-bottom: 100px;
+        }
+
+        header {
+            margin-bottom: 80px;
+        }
+
+        .header-tag {
+            display: inline-block;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 700;
+            color: #60a5fa;
+            background: rgba(37, 99, 235, 0.1);
+            margin-bottom: 25px;
+            padding: 10px 20px;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 64px;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .accent {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            max-width: 750px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        h2 {
+            font-size: 40px;
+            color: var(--text-primary);
+            margin-bottom: 50px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        h2::before {
+            content: '';
+            width: 4px;
+            height: 45px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* ----- CARDS (sans backdrop, sans animations complexes) ----- */
+        .card {
+            background: #1e293b;
+            border: 1px solid var(--border-light);
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
+            border-color: var(--primary);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .card-date {
+            color: var(--primary);
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+            font-weight: 600;
+            background: rgba(37, 99, 235, 0.1);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+            margin: 25px 0;
+        }
+
+        .card li {
+            padding-left: 28px;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            position: relative;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* ----- Bouton Attestation (intégré dans la carte) ----- */
+        .attestation-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 10px 0;
+            padding: 10px 20px;
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.15s;
+        }
+
+        .attestation-btn:hover {
+            background: rgba(37, 99, 235, 0.2);
+        }
+
+        /* ----- GRID & TAGS (simplifiés) ----- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .tag {
+            background: rgba(37, 99, 235, 0.15);
+            color: #93c5fd;
+            font-size: 12px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid var(--border-light);
+        }
+
+        /* ----- BOUTONS (sans pseudo-éléments animés) ----- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: opacity 0.15s, transform 0.15s;
+            border: none;
+            cursor: pointer;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(37, 99, 235, 0.1);
+            opacity: 1;
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        /* ----- FOOTER ----- */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid rgba(37, 99, 235, 0.2);
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ----- SCROLLBAR (discrète) ----- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 4px; }
+
+        /* ----- RESPONSIVE (identique structure) ----- */
+        @media (max-width: 1300px) {
+            .main-content { padding: 60px 50px; }
+            h1 { font-size: 52px; }
+            h2 { font-size: 36px; }
+        }
+
+        @media (max-width: 1000px) {
+            body { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 2px solid var(--primary);
+            }
+            .profile { padding: 40px 30px; }
+            .menu {
+                padding: 20px 15px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .menu a { padding: 10px 16px; }
+            .main-content { margin-left: 0; padding: 50px 40px; }
+            h1 { font-size: 44px; }
+            h2 { font-size: 32px; }
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 700px) {
+            .main-content { padding: 35px 25px; }
+            h1 { font-size: 36px; }
+            h2 { font-size: 28px; }
+            h2::before { width: 3px; height: 30px; }
+            .card { padding: 28px; }
+            .card-title { flex-direction: column; gap: 12px; font-size: 18px; }
+            .contact-buttons { flex-direction: column; }
+            .btn { width: 100%; }
+            .profile-avatar { width: 80px; height: 80px; font-size: 32px; }
+        }
+
+        @media (max-width: 500px) {
+            .main-content { padding: 25px 18px; }
+            h1 { font-size: 30px; }
+            h2 { font-size: 24px; margin-bottom: 35px; }
+            .card { padding: 20px; }
+            .tag { font-size: 11px; padding: 6px 12px; }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <div class="profile">
+            <div class="profile-avatar">DD</div>
+            <h2>Durot Daymon</h2>
+            <p>Systems & Security</p>
+        </div>
+        <div class="menu">
+            <a href="#presentation" class="active">Profil</a>
+            <a href="#cv">CV</a>
+            <a href="#stages">Expériences</a>
+            <a href="#competences">Compétences</a>
+            <a href="#tp">Travaux</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header>
+            <div class="header-tag">🚀 Portfolio 2026</div>
+            <h1>Durot <span class="accent">Daymon</span></h1>
+            <p class="subtitle">Administrateur Systèmes & Réseaux interresé par les infrastructures réseaux et la cybersécurité. En formation au Lycée Monge, je développe une expertise solide dans l'installation et la sécurisation d'équipements réseaux.</p>
+        </header>
+
+        <section id="presentation">
+            <h2>À Propos</h2>
+            <div class="card">
+                <p class="card-description">
+                    Étudiant en BTS SIO option SISR au Lycée Monge, je prends avec enthousiasme les défis de l'infrastructure informatique.
+                </p>
+                <p class="card-description">
+                    Au cours de mes expériences professionnelles, j'ai développé une compréhension des infrastructures : disponibilité des services, intégrité des données et conformité de sécurité. Je maîtrise aussi bien <strong>l'interconnexion de réseau</strong> que la <strong>mise en place de différents équipements réseaux</strong> pour assurer la connexion et la communication au sein du même réseau.
+                </p>
+            </div>
+        </section>
+
+        <section id="cv">
+            <h2>CV</h2>
+            <div class="card" style="text-align: center; padding: 60px 50px;">
+                <p class="card-description" style="margin-bottom: 30px; font-size: 16px;">Découvrez mon parcours scolaire.</p>
+                <a href="CV_Durot_Daymon.pdf" target="_blank" class="btn">
+                    📄 Consulter mon CV
+                </a>
+            </div>
+        </section>
+
+        <section id="stages">
+            <h2>Expériences</h2>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span>Stage de 1ère année — Support & Réseaux</span>
+                    <span class="card-date">2025 • 5 SEMAINES</span>
+                </div>
+                <p class="card-description">
+                    <strong>Lieu : Lycée Monge | Date : 2 juin 2025 -> 4 juillet 2025
+                </p>
+                <p class="card-description">
+                    <strong>Découverte et mise en place d'équipements réseaux</strong> — Première immersion dans un environnement informatique d'un établissement scolaire.
+                </p>
+                <ul>
+                    <li>Configuration de switchs et de routeurs, déploiement de segmentation VLAN au sein du réseau</li>
+                    <li>Déploiement de machine Linux au sein des salles avec Clonezilla</li>    
+                    <li>Installation de Windows Server et mise en place d'un NAS</li>
+                    <li>Maintenance informatique (pile du BIOS, mise en place de HDD et SSD)</li>
+                </ul>
+                <a href="attestation-stage1.pdf" target="_blank" class="attestation-btn">
+                    📜 Consulter l'attestation de stage
+                </a>
+                <div class="tags">
+                    <span class="tag">Cisco Networking</span>
+                    <span class="tag">VLAN & Trunking</span>
+                    <span class="tag">Fog</span>
+                    <span class="tag">Clonezilla</span>
+                    <span class="tag">Hardware</span>
+                    <span class="tag">Support informatique</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span>Stage de 2ème année — Gestion de projet & Réseaux</span>
+                    <span class="card-date">2026 • 5 SEMAINES</span>
+                </div>
+                <p class="card-description">
+                    <strong>Lieu : Lycée Monge | Date : 12 janvier 2026 -> 13 février 2026
+                </p>
+                <p class="card-description">
+                    <strong>Durant ce stage, le projet était de préparer la migration complète d'un VLAN et des machines présentes dans ce dernier vers un autre VLAN, mon rôle était de préparer ce projet. Ainsi j'ai pu mieux comprendre la migration et la mise en place de différents VLAN.
+                </p>
+                <ul>
+                    <li>Préparation de la migration complète de VLAN au sein du réseau</li>
+                    <li>Analyse de trames wireshark et approfondissement des connaissances</li>
+                    <li>Analyse de différentes configurations de switch pour le projet</li>
+                    <li>Vérification des ports ouverts des VLAN via NMAP</li>
+                    <li>Création d'un schéma réseau avec VISIO (schéma réseau actuel | schéma réseau final) </li>
+                    <li>Planification du projet avec un WBS (Work breakdown structure) avec toutes les tâches à effectuer</li>
+                </ul>
+                <a href="Attestation de stage 2ème année.pdf" target="_blank" class="attestation-btn">
+                    📜 Consulter l'attestation de stage
+                </a>
+                <div class="tags">
+                    <span class="tag">VLAN</span>
+                    <span class="tag">Wireshark</span>
+                    <span class="tag">Switch</span>
+                    <span class="tag">NMAP</span>
+                    <span class="tag">VISIO</span>
+                    <span class="tag">WBS</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="competences">
+            <h2>Compétences</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3 style="color: var(--text-primary); margin-bottom: 22px; font-size: 18px; font-weight: 700;">Systèmes & Virtualisation</h3>
+                    <div class="tags">
+                        <span class="tag">Windows Server</span>
+                        <span class="tag">Debian Linux</span>
+                        <span class="tag">Active Directory</span>
+                        <span class="tag">Group Policy (GPO)</span>
+                        <span class="tag">Hyper-V</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--text-primary); margin-bottom: 22px; font-size: 18px; font-weight: 700;">Réseaux & Sécurité</h3>
+                    <div class="tags">
+                        <span class="tag">VLAN & Trunking</span>
+                        <span class="tag">pfSense Firewall</span>
+                        <span class="tag">iptables</span>
+                        <span class="tag">DNS & DHCP</span>
+                        <span class="tag">SSH</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--text-primary); margin-bottom: 22px; font-size: 18px; font-weight: 700;">Outils & Scripting</h3>
+                    <div class="tags">
+                        <span class="tag">PowerShell</span>
+                        <span class="tag">NMAP</span>
+                        <span class="tag">Zabbix Monitoring</span>
+                        <span class="tag">Packet Tracer</span>
+                        <span class="tag">Wireshark</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tp">
+            <h2>Travaux Pratiques</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title" style="margin-bottom: 15px; font-size: 19px;">DNS</div>
+                    <p class="card-description" style="font-size: 15px;">Déploiement d'un DNS à travers un LAN incluant l'hébergement d'une page web sur le LAN. Configuration du DNS reverse et l'empêchement de la résolution de certains noms de domaines.</p>
+                    <a href="Durot Daymon - Compte rendu TP DNS.pdf" target="_blank" class="btn btn-outline btn-full">Consulter le rapport</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-title" style="margin-bottom: 15px; font-size: 19px;">Pare-feu Linux</div>
+                    <p class="card-description" style="font-size: 15px;">Mise en place de règles simples de pare-feu à l’aide d’iptables sur une machine Linux. Les règles à mettre en place sont par exemple bloquer http ou bien bloquer certaines adresses IP.</p>
+                    <a href="Durot Daymon - Compte rendu TP pare-feu.pdf" target="_blank" class="btn btn-outline btn-full">Consulter le rapport</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-title" style="margin-bottom: 15px; font-size: 19px;">Supervision réseau</div>
+                    <p class="card-description" style="font-size: 15px;">Déploiement d'un logiciel de supervision réseau permettant la surveillance d'une station linux, d'une station Windows et d'un Switch. Envoie d'alerte en cas de détection de problèmes</p>
+                    <a href="Durot Daymon - Compte rendu TP Zabbix.pdf" target="_blank" class="btn btn-outline btn-full">Consulter le rapport</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <div class="card">
+                <p class="card-description" style="margin-bottom: 30px; font-size: 16px;">
+                    Si vous souhaitez me contacter n'hésitez pas.
+                </p>
+                <div class="contact-buttons">
+                    <a href="mailto:daymondurot@gmail.com" class="btn">
+                        ✉️ Envoyer un Email
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Durot Daymon • BTS SIO SISR • Lycée Monge • Charleville-Mézières • 2024–2026</p>
+        </footer>
+    </main>
+
+    <script>
+        (function() {
+            const sections = document.querySelectorAll('section');
+            const menuLinks = document.querySelectorAll('.menu a');
+
+            function updateActiveLink() {
+                let current = '';
+                const scrollPos = window.pageYOffset;
+                sections.forEach(section => {
+                    if (scrollPos >= section.offsetTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                menuLinks.forEach(link => {
+                    link.classList.remove('active');
+                    const href = link.getAttribute('href');
+                    if (href && href.includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateActiveLink();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            menuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+
+            updateActiveLink();
+        })();
+    </script>
+</body>
+</html>
